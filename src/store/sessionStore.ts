@@ -3,10 +3,16 @@ import { create } from "zustand";
 interface User {
   id: string;
   email: string;
-  name?: string; // Optional since backend model has UserName and FullName
-  fullName?: string;
+  first_name: string;
+  last_name: string;
+  username?: string;
+  phone?: string;
+  avatar_url?: string;
+  street_address?: string;
+  city?: string;
+  region?: string;
+  postal_code?: string;
   role?: string;
-  avatarUrl?: string;
 }
 
 interface SessionState {

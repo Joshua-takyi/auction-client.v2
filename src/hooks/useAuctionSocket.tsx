@@ -71,6 +71,7 @@ export const useAuctionSocket = ({
         const baseUrl = host.includes("://") ? host.split("://")[1] : host;
         const url = `${protocol}//${baseUrl}/api/v1/ws/auctions/${roomId}?ticket=${ticket}`;
 
+        // establish a new websocket connection
         const socket = new WebSocket(url);
 
         socket.onopen = () => {

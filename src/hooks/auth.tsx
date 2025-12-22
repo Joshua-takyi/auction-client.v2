@@ -10,6 +10,20 @@ interface AuthCredentials {
   password: string;
 }
 
+export interface Profile {
+  id: string;
+  first_name: string;
+  last_name: string;
+  username?: string;
+  email?: string;
+  phone?: string;
+  avatar_url?: string;
+  street_address?: string;
+  city?: string;
+  region?: string;
+  postal_code?: string;
+}
+
 export const useAuth = () => {
   const { api } = useApiStore();
   const queryClient = useQueryClient();
@@ -67,11 +81,25 @@ export const useAuth = () => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (profile: Profile) => {
+      const res = await api.put("/users", profile);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+  });
   return {
     login: loginMutation,
     signup: signupMutation,
     user,
     signout: signoutMutation,
     isLoadingUser,
+    updateProfile: updateProfileMutation,
   };
 };

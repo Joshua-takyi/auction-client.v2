@@ -101,7 +101,7 @@ function SearchResults() {
     </div>
   );
 }
-
+// get to know how to use the suspense 
 export default function SearchPage() {
   return (
     <div className="min-h-screen bg-white pt-32 pb-24">

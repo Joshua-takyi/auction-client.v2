@@ -61,34 +61,84 @@ api.interceptors.request.use(
   }
 );
 
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (value?: any) => void;
+  reject: (reason?: any) => void;
+}> = [];
+
+const processQueue = (error: any) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
+  });
+  failedQueue = [];
+};
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
     const url = originalRequest.url || "";
 
+    // 1. Prevent infinite loops on auth endpoints
+    const isAuthRequest =
+      url.includes("/auth/refresh") ||
+      url.includes("/users/login") ||
+      url.includes("/auth/signout");
+
+    // 2. If it's a 401 and we haven't retried yet and it's not an auth request
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      !url.includes("/auth/refresh") &&
-      !url.includes("/auth/signout") &&
-      !url.includes("/users/login") &&
-      !url.includes("/users/profile")
+      !isAuthRequest
     ) {
+      // Use 'logged_in' cookie as a hint. If it's missing, don't bother refreshing.
+      const isLoggedIn =
+        typeof document !== "undefined" &&
+        document.cookie.includes("logged_in=true");
+      if (!isLoggedIn) {
+        return Promise.reject(error);
+      }
+
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => api(originalRequest))
+          .catch((err) => Promise.reject(err));
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
         await api.post("/auth/refresh");
+        processQueue(null);
         return api(originalRequest);
       } catch (err) {
-        // If refresh fails, clear cookies/state and redirect
-        // We don't await the signout here if it's going to loop,
-        // better to just redirect to where the user can re-auth
-        window.location.href = "/";
+        processQueue(err);
+
+        // If refresh fails, and it's NOT just the profile check, redirect to home
+        // This avoids loop if /users/profile keeps failing for guests
+        const isProfileCheck = url.includes("/users/profile");
+        if (
+          typeof window !== "undefined" &&
+          window.location.pathname !== "/" &&
+          !isProfileCheck
+        ) {
+          window.location.href = "/";
+        }
+
         return Promise.reject(err);
+      } finally {
+        isRefreshing = false;
       }
     }
+
     return Promise.reject(error);
   }
 );

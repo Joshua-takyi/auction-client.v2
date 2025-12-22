@@ -2,15 +2,6 @@
 
 import { use, useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
 
 // Mock initial data
 const INITIAL_BIDS = [
@@ -21,20 +12,13 @@ const INITIAL_BIDS = [
   { id: 5, bidder: "Anonymous", amount: 45000, time: "10:25:45" },
 ];
 
-const CUSTOM_TOOLTIP_STYLE = {
-  backgroundColor: "var(--background)",
-  border: "1px solid var(--border)",
-  color: "var(--foreground)",
-  fontSize: "12px",
-  padding: "8px",
-};
-
 export default function BidPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = use(params);
+  const { slug } = use(params);
+  const id = slug.split("--").pop() || slug;
   const [bids, setBids] = useState(INITIAL_BIDS);
   const [bidAmount, setBidAmount] = useState<string>("");
   const [isConnected, setIsConnected] = useState(false);
@@ -57,7 +41,6 @@ export default function BidPage({
     // Random incoming bid simulation
     const interval = setInterval(() => {
       if (Math.random() > 0.7) {
-        const lastBid = bids[bids.length - 1]; // This is stale in interval, but ok for mock
         setBids((prev) => {
           const last = prev[prev.length - 1];
           const newAmount =
@@ -133,61 +116,21 @@ export default function BidPage({
           </div>
 
           <div className="flex-1 min-h-[300px] mt-16 md:mt-0 w-full flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="80%">
-              <AreaChart data={bids}>
-                <defs>
-                  <linearGradient id="colorBids" x1="0" y1="0" x2="0" y2="1">
-                    <stop
-                      offset="5%"
-                      stopColor="var(--foreground)"
-                      stopOpacity={0.1}
-                    />
-                    <stop
-                      offset="95%"
-                      stopColor="var(--foreground)"
-                      stopOpacity={0}
-                    />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  vertical={false}
-                  stroke="var(--border)"
-                />
-                <XAxis
-                  dataKey="time"
-                  stroke="var(--muted)"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis
-                  stroke="var(--muted)"
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  domain={["auto", "auto"]}
-                  tickFormatter={(value) => `$${value / 1000}k`}
-                />
-                <Tooltip
-                  contentStyle={CUSTOM_TOOLTIP_STYLE}
-                  itemStyle={{ color: "var(--foreground)" }}
-                  formatter={(value: number) => [
-                    `$${value.toLocaleString()}`,
-                    "Bid Amount",
-                  ]}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="amount"
-                  stroke="var(--foreground)"
-                  strokeWidth={2}
-                  fillOpacity={1}
-                  fill="url(#colorBids)"
-                  isAnimationActive={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            <div className="text-center space-y-4 max-w-md px-6 animate-fade-in">
+              <div className="w-12 h-px bg-border mx-auto mb-6" />
+              <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground">
+                Lot Status
+              </h3>
+              <p className="text-lg font-serif italic text-foreground leading-relaxed">
+                The bidding activity for this lot is currently live. Monitor the
+                feed for the latest updates.
+              </p>
+              <div className="pt-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-muted/20 border border-border/40 text-[10px] uppercase font-bold tracking-tighter">
+                  Real-time synchronization active
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

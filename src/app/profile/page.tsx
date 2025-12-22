@@ -44,7 +44,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-h-[500px]">
             {activeTab === "bids" && <ActiveBids />}
             {activeTab === "purchases" && <PurchaseHistory />}
-            {activeTab === "settings" && <AccountSettings user={user} />}
+            {activeTab === "settings" && <AccountSettings user={user?.data} />}
           </div>
         </div>
       </div>
