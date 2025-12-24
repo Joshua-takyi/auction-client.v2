@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const HERO_SLIDES = [
   {
@@ -62,9 +62,8 @@ export default function Hero() {
         {HERO_SLIDES.map((slide, index) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
             style={{ backgroundColor: slide.bgColor }}
           >
             <div className="absolute inset-0 z-0">
@@ -89,17 +88,17 @@ export default function Hero() {
             </h2>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 md:p-8 rounded-2xl text-white shadow-xl max-w-md transform transition-all hover:bg-white/15">
-            <p className="text-sm md:text-base leading-relaxed font-light mb-6 text-gray-100">
+          <div className="bg-background/10 backdrop-blur-xl border border-foreground/20 p-6 md:p-8 rounded-2xl text-foreground shadow-xl max-w-md transform transition-all hover:bg-background/15">
+            <p className="text-sm md:text-base leading-relaxed font-light mb-6 text-foreground/90">
               An extraordinary week of the very finest jewelry, watches,
               handbags, sports collectibles, wine & spirits.
             </p>
             <Link
               href="/auctions"
-              className="inline-flex items-center gap-2 text-white text-xs font-bold tracking-widest uppercase hover:text-gray-200 transition-colors group"
+              className="inline-flex items-center gap-2 text-foreground text-xs font-bold tracking-widest uppercase hover:text-foreground/80 transition-colors group"
             >
               Browse Catalogues
-              <span className="w-8 h-px bg-white group-hover:w-12 transition-all" />
+              <span className="w-8 h-px bg-foreground group-hover:w-12 transition-all" />
             </Link>
           </div>
         </div>
@@ -120,7 +119,7 @@ export default function Hero() {
           <div className="flex gap-2">
             <button
               onClick={prevSlide}
-              className="w-12 h-12 rounded-full border border-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all backdrop-blur-sm"
+              className="w-12 h-12 rounded-full border border-foreground/20 hover:bg-foreground text-foreground hover:text-background flex items-center justify-center transition-all backdrop-blur-sm"
             >
               <svg
                 width="20"
@@ -135,7 +134,7 @@ export default function Hero() {
             </button>
             <button
               onClick={nextSlide}
-              className="w-12 h-12 rounded-full border border-white/20 hover:bg-white text-white hover:text-black flex items-center justify-center transition-all backdrop-blur-sm"
+              className="w-12 h-12 rounded-full border border-foreground/20 hover:bg-foreground text-foreground hover:text-background flex items-center justify-center transition-all backdrop-blur-sm"
             >
               <svg
                 width="20"

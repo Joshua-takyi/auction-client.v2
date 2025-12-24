@@ -2,7 +2,6 @@
 
 import useApiStore from "@/store/apistore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Product } from "./product";
 
 export interface Auction {
   id?: string;
@@ -178,6 +177,24 @@ export const listRecommendations = (params: {
   });
 };
 
+
+
+export const useUserAuctions = () => {
+  const { api } = useApiStore();
+
+  return useQuery<{ data: Auction[]; meta: any }>({
+    queryKey: ["auction", "user-auctions"],
+    queryFn: async () => {
+      const res = await api.get("/auctions/user");
+      if (res.status !== 200) {
+        throw new Error("Failed to get user auctions");
+      }
+      return res.data;
+    },
+  });
+};
+
+
 export const useAuctionStore = () => {
   return {
     createAuction: useCreateAuction,
@@ -186,5 +203,6 @@ export const useAuctionStore = () => {
     searchAuctions: useSearchAuctions,
     listRecommendations: listRecommendations,
     useUserBids: useUserBids,
+    useUserAuctions: useUserAuctions,
   };
 };

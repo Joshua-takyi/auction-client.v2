@@ -32,18 +32,17 @@ export const BidItem = ({
   return (
     <div className={`flex flex-col animate-slide-up items-start w-full`}>
       <div
-        className={`bg-white p-4 rounded-lg shadow-sm border ${
-          isLive ? "border-blue-100 bg-blue-50/10" : "border-gray-100"
-        } w-full group hover:border-blue-200 transition-colors`}
+        className={`bg-card p-4 rounded-lg shadow-sm border ${isLive ? "border-primary/20 bg-primary/5" : "border-border"
+          } w-full group hover:border-primary/30 transition-colors`}
       >
         <div className="flex items-baseline justify-between mb-2">
-          <span className="font-bold text-[11px] text-[#0a1f35] uppercase tracking-widest">
+          <span className="font-bold text-[11px] text-foreground uppercase tracking-widest">
             {isLive && (
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 mr-1.5 animate-pulse" />
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary mr-1.5 animate-pulse" />
             )}
             {formatBidderName()}
           </span>
-          <span className="text-[9px] text-gray-300 font-mono">
+          <span className="text-[9px] text-muted-foreground font-mono">
             {new Date(timestamp).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
@@ -52,9 +51,9 @@ export const BidItem = ({
           </span>
         </div>
         <div className="text-sm">
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Offered{" "}
-            <span className="text-gray-900 font-serif font-bold text-base ml-1">
+            <span className="text-foreground font-serif font-bold text-base ml-1">
               {convertCurrency(amount)}
             </span>
           </p>

@@ -1,7 +1,7 @@
+import { convertCurrency } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import TimeLeft from "./timeInterval";
-import { convertCurrency } from "@/utils";
 
 interface Product {
   id: string;
@@ -90,14 +90,12 @@ export default function ProductCard({ auction }: { auction: Auction }) {
         {/* Triangle Status Badge */}
         <div className="absolute top-0 left-0 z-20">
           <div
-            className={`w-12 h-12 relative flex items-start justify-start pl-1 pt-1 ${
-              isLive ? "text-foreground" : "text-white"
-            }`}
+            className={`w-12 h-12 relative flex items-start justify-start pl-1 pt-1 ${isLive ? "text-foreground" : "text-background"
+              }`}
           >
             <div
-              className={`absolute inset-0 ${
-                isLive ? "bg-white/95" : "bg-black/90"
-              } backdrop-blur-md`}
+              className={`absolute inset-0 ${isLive ? "bg-background/95" : "bg-foreground/90"
+                } backdrop-blur-md`}
               style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
             />
             <div className="relative z-10 -rotate-45 transform origin-center translate-y-0.5 -translate-x-px">
@@ -129,7 +127,7 @@ export default function ProductCard({ auction }: { auction: Auction }) {
         </div>
 
         <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-          <span className="bg-white text-black px-4 py-2 text-xs uppercase tracking-widest font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+          <span className="bg-background text-foreground px-4 py-2 text-xs uppercase tracking-widest font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
             View Lot
           </span>
         </div>
@@ -164,9 +162,8 @@ export default function ProductCard({ auction }: { auction: Auction }) {
               Ends In
             </span>
             <span
-              className={`font-medium tabular-nums ${
-                isLive ? "text-red-600" : "text-foreground"
-              }`}
+              className={`font-medium tabular-nums ${isLive ? "text-red-600" : "text-foreground"
+                }`}
             >
               <TimeLeft endTime={auction?.end_time} />
             </span>

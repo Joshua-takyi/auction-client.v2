@@ -1,10 +1,8 @@
-"use client";
-
 import AddToAuction from "@/components/addToAuction";
 
-export default function AddToAuctionPage() {
+export default function AuctionPage() {
   return (
-    <div>
+    <div className="container-lux">
       <AddToAuction />
     </div>
   );

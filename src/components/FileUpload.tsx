@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect, ChangeEvent, DragEvent } from "react";
 import Image from "next/image";
+import { ChangeEvent, DragEvent, useEffect, useRef, useState } from "react";
 
 interface FileUploadProps {
   multiple?: boolean;
   onFilesSelected: (files: File[]) => void;
   onRemoveFile?: (file: File) => void;
-  currentFiles?: File[]; // Controlled state from parent
+  currentFiles?: File[];
   label?: string;
   subLabel?: string;
 }
@@ -72,7 +72,7 @@ export default function FileUpload({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <label className="text-xs uppercase tracking-widest text-muted block mb-2">
+        <label className="text-xs uppercase tracking-widest block mb-2">
           {label}
         </label>
       </div>
@@ -80,10 +80,9 @@ export default function FileUpload({
       <div
         className={`relative group cursor-pointer transition-all duration-300 ease-out
           border border-dashed p-8 text-center min-h-[160px] flex flex-col items-center justify-center
-          ${
-            isDragging
-              ? "border-black bg-gray-50"
-              : "border-border hover:border-muted"
+          ${isDragging
+            ? "border-black bg-gray-50"
+            : "border-border hover:border-muted"
           }
         `}
         onDragOver={handleDragOver}

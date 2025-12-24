@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import { Inter, Cinzel } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/theme-provider";
 import { NotificationSystem } from "@/components/ui/NotificationSystem";
 import { QueryProvider } from "@/provider/queryProvider";
+import type { Metadata } from "next";
+import { Cinzel, Inter } from "next/font/google";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -27,15 +27,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${cinzel.variable} antialiased font-sans flex flex-col min-h-screen`}
       >
         <QueryProvider>
-          <Navbar />
-          <main className="grow">{children}</main>
-          <Footer />
-          <NotificationSystem />
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <main className="grow">{children}</main>
+            <Footer />
+            <NotificationSystem />
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>

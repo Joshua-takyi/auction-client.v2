@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, MouseEvent } from "react";
 import Image from "next/image";
+import { MouseEvent, useRef, useState } from "react";
 
 interface ProductGalleryProps {
   images: string[];
@@ -41,11 +41,10 @@ export default function ProductGallery({
           <button
             key={i}
             onClick={() => setSelectedImage(img)}
-            className={`mt-2 relative aspect-square w-20 md:w-full bg-muted overflow-hidden transition-all shrink-0 ${
-              selectedImage === img
+            className={`mt-2 relative aspect-square w-20 md:w-full bg-muted overflow-hidden transition-all shrink-0 ${selectedImage === img
                 ? "opacity-100 ring-2 ring-foreground"
                 : "opacity-60 hover:opacity-100"
-            }`}
+              }`}
           >
             <Image
               src={img || FALLBACK_IMAGE}
@@ -60,7 +59,7 @@ export default function ProductGallery({
       {/* Main Image View */}
       <div
         ref={imageRef}
-        className="relative aspect-square md:aspect-auto md:h-[600px] lg:h-[700px] w-full bg-white flex-1 overflow-hidden cursor-crosshair group border-none"
+        className="relative aspect-square md:aspect-auto md:h-[600px] lg:h-[700px] w-full bg-background flex-1 overflow-hidden cursor-crosshair group border-none"
         onMouseEnter={() => setIsZoomed(true)}
         onMouseLeave={() => setIsZoomed(false)}
         onMouseMove={handleMouseMove}
@@ -70,11 +69,10 @@ export default function ProductGallery({
           src={selectedImage || FALLBACK_IMAGE}
           alt={name}
           fill
-          className={`object-contain transition-transform will-change-transform ${
-            isZoomed
+          className={`object-contain transition-transform will-change-transform ${isZoomed
               ? "scale-[2.5] duration-0"
               : "scale-100 duration-300 ease-out"
-          }`}
+            }`}
           style={{
             transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
           }}
@@ -83,7 +81,7 @@ export default function ProductGallery({
         />
 
         {/* Subtle overlay hint */}
-        <div className="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <div className="absolute bottom-4 right-4 bg-background/50 backdrop-blur-md text-foreground px-3 py-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
           Click to expand
         </div>
       </div>
@@ -91,11 +89,11 @@ export default function ProductGallery({
       {/* Lightbox */}
       {showLightbox && (
         <div
-          className="fixed inset-0 z-50 bg-black flex items-center justify-center animate-fade-in"
+          className="fixed inset-0 z-50 bg-background/95 flex items-center justify-center animate-fade-in"
           onClick={() => setShowLightbox(false)}
         >
           <button
-            className="absolute top-6 right-6 text-white hover:text-gray-300 z-50"
+            className="absolute top-6 right-6 text-foreground hover:text-muted-foreground z-50"
             onClick={() => setShowLightbox(false)}
           >
             <svg
